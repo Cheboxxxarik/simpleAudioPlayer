@@ -111,7 +111,7 @@
      <set>Qt::AlignCenter</set>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton">
+   <widget class="QPushButton" name="pausePlay">
     <property name="geometry">
      <rect>
       <x>454</x>
@@ -124,7 +124,7 @@
      <string>Пауза/Пуск</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_2">
+   <widget class="QPushButton" name="previousSong">
     <property name="geometry">
      <rect>
       <x>349</x>
@@ -137,7 +137,7 @@
      <string>&lt;&lt;</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="pushButton_3">
+   <widget class="QPushButton" name="nextSong">
     <property name="geometry">
      <rect>
       <x>559</x>
@@ -150,10 +150,10 @@
      <string>&gt;&gt;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label">
+   <widget class="QLabel" name="playedBefore">
     <property name="geometry">
      <rect>
-      <x>480</x>
+      <x>260</x>
       <y>260</y>
       <width>481</width>
       <height>71</height>
@@ -181,8 +181,20 @@
      <height>26</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Меню</string>
+    </property>
+    <addaction name="open"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="open">
+   <property name="text">
+    <string>Открыть</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

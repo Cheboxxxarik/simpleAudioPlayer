@@ -1,0 +1,3 @@
+import getpass
+
+defaultMusicFolder = 'music'
