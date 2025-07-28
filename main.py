@@ -1,102 +1,14 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtWidgets
 
-
-class Ui_MainWindow(object):
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 800)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.timeView = QtWidgets.QSlider(self.centralwidget)
-        self.timeView.setGeometry(QtCore.QRect(100, 100, 800, 21))
-        self.timeView.setOrientation(QtCore.Qt.Horizontal)
-        self.timeView.setObjectName("timeView")
-        self.songTitle = QtWidgets.QLabel(self.centralwidget)
-        self.songTitle.setGeometry(QtCore.QRect(240, 10, 521, 31))
-        font = QtGui.QFont()
-        font.setPointSize(12)
-        self.songTitle.setFont(font)
-        self.songTitle.setAlignment(QtCore.Qt.AlignCenter)
-        self.songTitle.setObjectName("songTitle")
-        self.artist = QtWidgets.QLabel(self.centralwidget)
-        self.artist.setGeometry(QtCore.QRect(240, 60, 521, 31))
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.artist.setFont(font)
-        self.artist.setAlignment(QtCore.Qt.AlignCenter)
-        self.artist.setObjectName("artist")
-        self.presentTime = QtWidgets.QLabel(self.centralwidget)
-        self.presentTime.setGeometry(QtCore.QRect(35, 100, 55, 22))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.presentTime.setFont(font)
-        self.presentTime.setAlignment(QtCore.Qt.AlignCenter)
-        self.presentTime.setObjectName("presentTime")
-        self.songLength = QtWidgets.QLabel(self.centralwidget)
-        self.songLength.setGeometry(QtCore.QRect(915, 100, 55, 22))
-        font = QtGui.QFont()
-        font.setPointSize(10)
-        self.songLength.setFont(font)
-        self.songLength.setAlignment(QtCore.Qt.AlignCenter)
-        self.songLength.setObjectName("songLength")
-        self.pausePlay = QtWidgets.QPushButton(self.centralwidget)
-        self.pausePlay.setGeometry(QtCore.QRect(454, 140, 93, 28))
-        self.pausePlay.setObjectName("pausePlay")
-        self.previousSong = QtWidgets.QPushButton(self.centralwidget)
-        self.previousSong.setGeometry(QtCore.QRect(349, 140, 93, 28))
-        self.previousSong.setObjectName("previousSong")
-        self.nextSong = QtWidgets.QPushButton(self.centralwidget)
-        self.nextSong.setGeometry(QtCore.QRect(559, 140, 93, 28))
-        self.nextSong.setObjectName("nextSong")
-        self.playedBefore = QtWidgets.QLabel(self.centralwidget)
-        self.playedBefore.setGeometry(QtCore.QRect(260, 260, 481, 71))
-        font = QtGui.QFont()
-        font.setPointSize(11)
-        self.playedBefore.setFont(font)
-        self.playedBefore.setAlignment(QtCore.Qt.AlignCenter)
-        self.playedBefore.setObjectName("playedBefore")
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 26))
-        self.menubar.setObjectName("menubar")
-        self.menu = QtWidgets.QMenu(self.menubar)
-        self.menu.setObjectName("menu")
-        MainWindow.setMenuBar(self.menubar)
-        self.menu.addAction('Открыть', self.openFile)
-        self.menubar.addAction(self.menu.menuAction())
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
-
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "simpleAudioPlayer"))
-        self.songTitle.setText(_translate("MainWindow", "<Название песни>"))
-        self.artist.setText(_translate("MainWindow", "<Исполнитель>"))
-        self.presentTime.setText(_translate("MainWindow", "00:00"))
-        self.songLength.setText(_translate("MainWindow", "00:00"))
-        self.pausePlay.setText(_translate("MainWindow", "Пауза/Пуск"))
-        self.previousSong.setText(_translate("MainWindow", "<<"))
-        self.nextSong.setText(_translate("MainWindow", ">>"))
-        self.playedBefore.setText(_translate("MainWindow", "Вопроизведённые ранее"))
-        self.menu.setTitle(_translate("MainWindow", "Меню"))
-
-    def openFile(self):
-        fileName = QtWidgets.QFileDialog.getOpenFileName(self, "Открыть файл", "", "Музыка (*.mp3 *.wav)")
-
-        try:
-            print(fileName)
-        except FileNotFoundError:
-            pass
+class MainWindow(QtWidgets.QMainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
+        self.setWindowTitle('simpleAudioPlayer')
+        self.resize(1000, 800)
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    window = MainWindow()
+    window.show()
     sys.exit(app.exec_())
