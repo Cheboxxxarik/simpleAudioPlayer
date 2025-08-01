@@ -57,7 +57,7 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
 
         self.menu = QtWidgets.QMenu(self.menubar)
-        self.menu.addAction('Открыть', self.actionClicked)
+        self.menu.addAction('Открыть', functionality.openFile)
         self.menubar.addAction(self.menu.menuAction())
         
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
@@ -79,12 +79,6 @@ class Ui_MainWindow(object):
         self.playedBefore.setText(_translate("MainWindow", "Вопроизведённые ранее"))
         self.menu.setTitle(_translate("MainWindow", "Меню"))
 
-    @QtCore.pyqtSlot()
-    def actionClicked(self):
-        action = self.sender().text()
-        
-        if action == 'Открыть':
-            functionality.openFile(self)
 
 if __name__ == "__main__":
     import sys
