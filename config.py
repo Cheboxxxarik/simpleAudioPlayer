@@ -8,5 +8,4 @@ defaultFullTitleFont = f"font: {defaultTitleFontSize} \"{defaultFont}\";\n"
 defaultFullFont = f"font: {defaultFontSize} \"{defaultFont}\";\n"
 defaultFullTimeFont = f"font: {defaultTimeFontSize} \"{defaultFont}\";\n"
 
-
 beginning = '00:00'
