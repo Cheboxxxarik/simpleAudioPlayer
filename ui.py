@@ -54,16 +54,6 @@ class Ui_MainWindow(object):
 
         self.nextSong = QtWidgets.QPushButton(self.centralwidget)
         self.nextSong.setGeometry(QtCore.QRect(664, 725, 93, 28))
-        
-        self.playlistLabel = QtWidgets.QLabel(self.centralwidget)
-        self.playlistLabel.setGeometry(QtCore.QRect(600, 225, 371, 71))
-        self.playlistLabel.setStyleSheet(config.defaultFullTitleFont)
-        self.playlistLabel.setAlignment(QtCore.Qt.AlignLeft)
-
-        self.playlist = QtWidgets.QLabel(self.centralwidget)
-        self.playlist.setGeometry(QtCore.QRect(600, 269, 371, 282))
-        self.playlist.setStyleSheet(config.defaultFullFont)
-        self.playlist.setAlignment(QtCore.Qt.AlignLeft)
 
         self.fileCharacteristics = QtWidgets.QLabel(self.centralwidget)
         self.fileCharacteristics.setGeometry(QtCore.QRect(600, 30, 360, 31))
@@ -71,9 +61,19 @@ class Ui_MainWindow(object):
         self.fileCharacteristics.setAlignment(QtCore.Qt.AlignLeft)
 
         self.fileCharacteristicsList = QtWidgets.QLabel(self.centralwidget)
-        self.fileCharacteristicsList.setGeometry(QtCore.QRect(600, 75, 371, 151))
+        self.fileCharacteristicsList.setGeometry(QtCore.QRect(600, 75, 371, 201))
         self.fileCharacteristicsList.setStyleSheet(config.defaultFullFont)
         self.fileCharacteristicsList.setAlignment(QtCore.Qt.AlignLeft)
+        
+        self.playlistLabel = QtWidgets.QLabel(self.centralwidget)
+        self.playlistLabel.setGeometry(QtCore.QRect(600, 285, 371, 71))
+        self.playlistLabel.setStyleSheet(config.defaultFullTitleFont)
+        self.playlistLabel.setAlignment(QtCore.Qt.AlignLeft)
+
+        self.playlist = QtWidgets.QLabel(self.centralwidget)
+        self.playlist.setGeometry(QtCore.QRect(600, 329, 371, 282))
+        self.playlist.setStyleSheet(config.defaultFullFont)
+        self.playlist.setAlignment(QtCore.Qt.AlignLeft)
 
         MainWindow.setCentralWidget(self.centralwidget)
         
@@ -82,7 +82,8 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
 
         self.menu = QtWidgets.QMenu(self.menubar)
-        self.menu.addAction('Открыть файл', self.actionClicked)
+        self.menu.addAction('Открыть файл', self.openFile)
+        self.menu.addAction('Открыть папку', self.openFolder)
         self.menubar.addAction(self.menu.menuAction())
 
         self.retranslateUi(MainWindow)
@@ -106,6 +107,9 @@ class Ui_MainWindow(object):
         self.fileCharacteristicsList.setText(_translate("MainWindow", "Название: <Название>\n" \
                                                 "Исполнитель: <Исполнитель>\n" \
                                                 "Альбом: <Альбом>\nЖанр: <Жанр>\n" \
-                                                "Размер файла: 0Мб \n" \
+                                                "Частота дискретизации: 0 Гц\n" \
+                                                "Битрейт: 0 Бит/с\n" \
+                                                "Количество каналов: 0\n" \
+                                                "Размер: 0 Мб\n"
                                                 "Дата создания файла: 00.00.0000"))
         self.menu.setTitle(_translate("MainWindow", "Меню"))
