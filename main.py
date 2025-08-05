@@ -22,8 +22,7 @@ class Window(ui.Ui_MainWindow):
                                                 f"Альбом: {album}\nЖанр: {genre}\n" \
                                                 f"Размер файла: {fileSize}Мб \n" \
                                                 f"Дата создания файла: {creationDate}"))
-        self.songTitle.setText(_translate("MainWindow", f"{title}"))
-        self.songAuthor.setText(_translate("MainWindow", f"{artist}"))
+        self.fileTitle.setText(_translate("MainWindow", f"{title}"))
         self.songLength.setText(_translate("MainWindow", f'{minutes}:{seconds}'))
 
     def getMP3Metadata(self, fileName):  
