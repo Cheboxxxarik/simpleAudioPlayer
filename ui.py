@@ -11,10 +11,12 @@ class Ui_MainWindow(object):
         self.wallpaper = QtWidgets.QLabel(self.centralwidget)
         self.wallpaper.setGeometry(0, 0, 1000, 800)
         self.wallpaper.setPixmap(QtGui.QPixmap(config.defaultWallpaper))
+        self.wallpaper.setScaledContents(True)
 
         self.albumCover = QtWidgets.QLabel(self.centralwidget)
         self.albumCover.setGeometry(35, 30, 521, 521)
         self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
+        self.albumCover.setScaledContents(True)
         
         self.timeView = QtWidgets.QSlider(self.centralwidget)
         self.timeView.setGeometry(QtCore.QRect(100, 700, 800, 21))
@@ -42,6 +44,7 @@ class Ui_MainWindow(object):
         
         self.pausePlay = QtWidgets.QPushButton(self.centralwidget)
         self.pausePlay.setGeometry(QtCore.QRect(454, 725, 93, 28))
+        self.pausePlay.clicked.connect(self.playPause)
 
         self.previousSong = QtWidgets.QPushButton(self.centralwidget)
         self.previousSong.setGeometry(QtCore.QRect(244, 725, 93, 28))
