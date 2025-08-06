@@ -1,6 +1,6 @@
 defaultMusicFolder = 'music'
 defaultWallpaper = ''
-defaultAlbumCover = 'images\cover.png'
+defaultAlbumCover = 'images/cover.png'
 defaultFont = 'Noto Sans'
 defaultTitleFontSize = '12pt'
 defaultFontSize = '11pt'
