@@ -5,7 +5,7 @@ import config
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 800)
+        MainWindow.resize(1000, 750)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
 
         self.wallpaper = QtWidgets.QLabel(self.centralwidget)
@@ -19,44 +19,39 @@ class Ui_MainWindow(object):
         self.albumCover.setScaledContents(True)
         
         self.timeView = QtWidgets.QSlider(self.centralwidget)
-        self.timeView.setGeometry(QtCore.QRect(100, 700, 800, 21))
+        self.timeView.setGeometry(QtCore.QRect(100, 650, 800, 21))
         self.timeView.setOrientation(QtCore.Qt.Horizontal)
         
         self.fileTitle = QtWidgets.QLabel(self.centralwidget)
         self.fileTitle.setGeometry(QtCore.QRect(35, 580, 521, 31))
         self.fileTitle.setStyleSheet(config.defaultFullFileTitleFont)
         self.fileTitle.setAlignment(QtCore.Qt.AlignLeft)
-
-        self.filePath = QtWidgets.QLabel(self.centralwidget)
-        self.filePath.setGeometry(QtCore.QRect(35, 635, 521, 31))
-        self.filePath.setStyleSheet(config.defaultFullFont)
-        self.filePath.setAlignment(QtCore.Qt.AlignLeft)
         
         self.presentTime = QtWidgets.QLabel(self.centralwidget)
-        self.presentTime.setGeometry(QtCore.QRect(35, 700, 55, 22))
+        self.presentTime.setGeometry(QtCore.QRect(35, 650, 55, 22))
         self.presentTime.setStyleSheet(config.defaultFullTimeFont)
         self.presentTime.setAlignment(QtCore.Qt.AlignLeft)
         
         self.songLength = QtWidgets.QLabel(self.centralwidget)
-        self.songLength.setGeometry(QtCore.QRect(915, 700, 55, 22))
+        self.songLength.setGeometry(QtCore.QRect(915, 650, 55, 22))
         self.songLength.setStyleSheet(config.defaultFullTimeFont)
         self.songLength.setAlignment(QtCore.Qt.AlignLeft)
         
         self.pausePlay = QtWidgets.QPushButton(self.centralwidget)
-        self.pausePlay.setGeometry(QtCore.QRect(454, 725, 93, 28))
+        self.pausePlay.setGeometry(QtCore.QRect(454, 675, 93, 28))
         self.pausePlay.clicked.connect(self.playPause)
 
         self.previousSong = QtWidgets.QPushButton(self.centralwidget)
-        self.previousSong.setGeometry(QtCore.QRect(244, 725, 93, 28))
+        self.previousSong.setGeometry(QtCore.QRect(244, 675, 93, 28))
         
         self.tenSecondsAgo = QtWidgets.QPushButton(self.centralwidget)
-        self.tenSecondsAgo.setGeometry(QtCore.QRect(349, 725, 93, 28))
+        self.tenSecondsAgo.setGeometry(QtCore.QRect(349, 675, 93, 28))
         
         self.tenSecondsAhead = QtWidgets.QPushButton(self.centralwidget)
-        self.tenSecondsAhead.setGeometry(QtCore.QRect(559, 725, 93, 28))
+        self.tenSecondsAhead.setGeometry(QtCore.QRect(559, 675, 93, 28))
 
         self.nextSong = QtWidgets.QPushButton(self.centralwidget)
-        self.nextSong.setGeometry(QtCore.QRect(664, 725, 93, 28))
+        self.nextSong.setGeometry(QtCore.QRect(664, 675, 93, 28))
 
         self.fileCharacteristics = QtWidgets.QLabel(self.centralwidget)
         self.fileCharacteristics.setGeometry(QtCore.QRect(600, 30, 360, 31))
@@ -96,7 +91,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "simpleAudioPlayer"))
         self.fileTitle.setText(_translate("MainWindow", "<Название файла>"))
-        self.filePath.setText(_translate("MainWindow", "<Путь к файлу>"))
         self.presentTime.setText(_translate("MainWindow", "00:00"))
         self.songLength.setText(_translate("MainWindow", "00:00"))
         self.pausePlay.setText(_translate("MainWindow", "Пауза/Пуск"))
@@ -108,11 +102,11 @@ class Ui_MainWindow(object):
         self.playlist.setText(_translate("MainWindow", "^_^"))
         self.fileCharacteristics.setText(_translate("MainWindow", "Характеристики файла"))
         self.fileCharacteristicsList.setText(_translate("MainWindow", "Название: <Название>\n" \
-                                                "Исполнитель: <Исполнитель>\n" \
-                                                "Альбом: <Альбом>\nЖанр: <Жанр>\n" \
-                                                "Частота дискретизации: 0 Гц\n" \
-                                                "Битрейт: 0 Бит/с\n" \
-                                                "Количество каналов: 0\n" \
-                                                "Размер: 0 Мб\n"
-                                                "Дата создания файла: 00.00.0000"))
+                                                        "Исполнитель: <Исполнитель>\n" \
+                                                        "Альбом: <Альбом>\nЖанр: <Жанр>\n" \
+                                                        "Частота дискретизации: 0 Гц\n" \
+                                                        "Битрейт: 0 Бит/с\n" \
+                                                        "Количество каналов: 0\n" \
+                                                        "Размер: 0 Мб\n"
+                                                        "Дата создания файла: 00.00.0000"))
         self.menu.setTitle(_translate("MainWindow", "Меню"))

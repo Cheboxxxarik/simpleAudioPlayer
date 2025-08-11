@@ -3,7 +3,7 @@ from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, ID3NoHeaderError, APIC
 from mutagen.wave import WAVE
 from mutagen.flac import FLAC, FLACNoHeaderError 
-from os.path import getsize, getmtime, splitext
+from os.path import getsize, getmtime, splitext, basename
 from datetime import datetime
 from pygame.mixer import init, music
 import config, ui
@@ -18,19 +18,18 @@ class Window(ui.Ui_MainWindow):
         seconds = audioLength % 60
         formattedTime = f"{minutes:02d}:{seconds:02d}" 
 
-        visibleFileName = fileName.rsplit('/', 1)[1]
+        visibleFileName = basename(fileName)
         
         _translate = QtCore.QCoreApplication.translate
         self.fileCharacteristicsList.setText(_translate("MainWindow", f"Название: {title}\n" \
-                                                f"Исполнитель: {artist}\n" \
-                                                f"Альбом: {album}\nЖанр: {genre}\n" \
-                                                f"Частота дискретизации: {sampleRate} Гц\n"
-                                                f"Битрейт: {bitrate} Бит/с\n" \
-                                                f"Количество каналов: {channels}\n"
-                                                f"Размер: {fileSize} Мб\n" \
-                                                f"Дата создания файла: {creationDate}"))
+                                                        f"Исполнитель: {artist}\n" \
+                                                        f"Альбом: {album}\nЖанр: {genre}\n" \
+                                                        f"Частота дискретизации: {sampleRate} Гц\n"
+                                                        f"Битрейт: {bitrate} Бит/с\n" \
+                                                        f"Количество каналов: {channels}\n"
+                                                        f"Размер: {fileSize} Мб\n" \
+                                                        f"Дата создания файла: {creationDate}"))
         self.fileTitle.setText(_translate("MainWindow", visibleFileName))
-        self.filePath.setText(_translate("MainWindow", fileName))
         self.songLength.setText(_translate("MainWindow", formattedTime))
 
     def getCommonMetadata(self, audio, fileName):
