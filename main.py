@@ -1,11 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaPlaylist, QMediaContent
 from mutagen.mp3 import MP3  
 from mutagen.id3 import ID3, ID3NoHeaderError, APIC
 from mutagen.wave import WAVE
 from mutagen.flac import FLAC, FLACNoHeaderError 
 from os.path import getsize, getmtime, splitext, basename
 from datetime import datetime
-from pygame.mixer import init, music
 import config, ui
 
 
@@ -101,23 +101,24 @@ class Window(ui.Ui_MainWindow):
             pass
 
     def openFile(self):
-        fileName = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget, "Открыть файл", 
+        self.fileName = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget, "Открыть файл", 
                                                         f"{config.defaultMusicFolder}",
                                                         "Музыка(*.mp3 *.wav *.flac)")[0]
 
         try:
-            extension = splitext(fileName)[1]
+            extension = splitext(self.fileName)[1]
             if extension == '.mp3':
-                self.getMP3Metadata(fileName)
+                self.getMP3Metadata(self.fileName)
             elif extension == '.wav':
-                self.getWAVEMetadata(fileName)
+                self.getWAVEMetadata(self.fileName)
             elif extension == '.flac':
-                self.getFLACMetadata(fileName)
+                self.getFLACMetadata(self.fileName)
 
-            init()
-            music.load(fileName)
-            music.play(0)
-
+            self.url = QtCore.QUrl.fromLocalFile(self.fileName)
+            self.content = QMediaContent(self.url)
+            self.player = QMediaPlayer()
+            self.player.setMedia(self.content)
+            self.player.play()
         except Exception:
             pass
 
@@ -129,10 +130,7 @@ class Window(ui.Ui_MainWindow):
             pass
 
     def playPause(self):
-        if music.get_busy():  # Проверяем, играет ли музыка
-            music.pause()
-        else:
-            music.unpause()
+        pass
 
   
 if __name__ == "__main__":
