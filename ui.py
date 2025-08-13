@@ -50,7 +50,7 @@ class Ui_MainWindow(object):
         
         self.tenSecondsAhead = QtWidgets.QPushButton(self.centralwidget)
         self.tenSecondsAhead.setGeometry(QtCore.QRect(559, 675, 93, 28))
-        self.tenSecondsAhead.clicked.connect(self.fastForward)
+        self.tenSecondsAhead.clicked.connect(lambda: self.fastForward(self.audioLength))
 
         self.nextSong = QtWidgets.QPushButton(self.centralwidget)
         self.nextSong.setGeometry(QtCore.QRect(664, 675, 93, 28))

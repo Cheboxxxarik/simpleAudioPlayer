@@ -139,11 +139,25 @@ class Window(ui.Ui_MainWindow):
             self.player.play()
             self.playing = True
 
-    def rewind(self):
+    def changeTimePosition(self):
         pass
 
-    def fastForward(self):
-        pass
+    def rewind(self):
+        currentPosition = self.player.position()
+        newPosition = currentPosition - 10000
+        if newPosition > 0:
+            self.player.setPosition(newPosition)
+        else:
+            self.player.setPosition(0)        
+
+    def fastForward(self, audioLength):
+        currentPosition = self.player.position()
+        newPosition = currentPosition + 10000
+        audioLengthMs = audioLength * 1000
+        if newPosition < audioLengthMs:
+            self.player.setPosition(newPosition)
+        else:
+            self.player.setPosition(0)
 
     def playPreviousSong(self):
         pass
