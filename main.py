@@ -119,6 +119,8 @@ class Window(ui.Ui_MainWindow):
             self.player = QMediaPlayer()
             self.player.setMedia(self.content)
             self.player.play()
+
+            self.playing = True
         except Exception:
             pass
 
@@ -130,6 +132,17 @@ class Window(ui.Ui_MainWindow):
             pass
 
     def playPause(self):
+        if self.playing:
+            self.player.pause()
+            self.playing = False
+        else:
+            self.player.play()
+            self.playing = True
+
+    def playPreviousSong(self):
+        pass
+
+    def playNextSong(self):
         pass
 
   
