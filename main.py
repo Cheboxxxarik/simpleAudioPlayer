@@ -11,12 +11,15 @@ import config, ui
 
 class Window(ui.Ui_MainWindow):
 
+    def formatTime(self, time):
+        minutes = time // 60
+        seconds = time % 60
+        self.formattedTime = f"{minutes:02d}:{seconds:02d}" 
+
     def setInformation(self, fileName, audioLength, sampleRate, bitrate, 
                        channels, fileSize, creationDate, title, artist, album,
                        genre):
-        minutes = audioLength // 60
-        seconds = audioLength % 60
-        formattedTime = f"{minutes:02d}:{seconds:02d}" 
+        self.formatTime(audioLength)
 
         visibleFileName = basename(fileName)
         
@@ -30,7 +33,7 @@ class Window(ui.Ui_MainWindow):
                                                         f"Размер: {fileSize} Мб\n" \
                                                         f"Дата создания файла: {creationDate}"))
         self.fileTitle.setText(_translate("MainWindow", visibleFileName))
-        self.songLength.setText(_translate("MainWindow", formattedTime))
+        self.songLength.setText(_translate("MainWindow", self.formattedTime))
 
     def getCommonMetadata(self, audio, fileName):
         self.audioLength = audio.info.length
@@ -119,6 +122,9 @@ class Window(ui.Ui_MainWindow):
             self.player = QMediaPlayer()
             self.player.setMedia(self.content)
             self.player.play()
+            self.timeProgressBar.setRange(0, self.player.duration())
+            self.timeProgressBar.setEnabled(True)
+            self.player.positionChanged.connect(self.updateTimeProgressBar)
 
             self.playing = True
         except Exception:
@@ -139,7 +145,7 @@ class Window(ui.Ui_MainWindow):
             self.player.play()
             self.playing = True
 
-    def changeTimePosition(self):
+    def updateTimeProgressBar(self):
         pass
 
     def rewind(self):
@@ -157,7 +163,11 @@ class Window(ui.Ui_MainWindow):
         if newPosition < audioLengthMs:
             self.player.setPosition(newPosition)
         else:
-            self.player.setPosition(0)
+            try:
+                self.player.setPosition(audioLengthMs)
+                self.player.stop()
+            except TypeError:
+                pass
 
     def playPreviousSong(self):
         pass

@@ -18,11 +18,12 @@ class Ui_MainWindow(object):
         self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
         self.albumCover.setScaledContents(True)
         
-        self.timeView = QtWidgets.QSlider(self.centralwidget)
-        self.timeView.setGeometry(QtCore.QRect(100, 650, 800, 21))
-        self.timeView.setOrientation(QtCore.Qt.Horizontal)
-        
-        self.fileTitle = QtWidgets.QLabel(self.centralwidget)
+        self.timeProgressBar = QtWidgets.QSlider(self.centralwidget)
+        self.timeProgressBar.setGeometry(QtCore.QRect(100, 650, 800, 21))
+        self.timeProgressBar.setOrientation(QtCore.Qt.Horizontal)
+        self.timeProgressBar.setEnabled(False)
+
+        self.fileTitle= QtWidgets.QLabel(self.centralwidget)
         self.fileTitle.setGeometry(QtCore.QRect(35, 580, 521, 31))
         self.fileTitle.setStyleSheet(config.defaultFullFileTitleFont)
         self.fileTitle.setAlignment(QtCore.Qt.AlignLeft)
@@ -40,20 +41,25 @@ class Ui_MainWindow(object):
         self.pausePlay = QtWidgets.QPushButton(self.centralwidget)
         self.pausePlay.setGeometry(QtCore.QRect(454, 675, 93, 28))
         self.pausePlay.clicked.connect(self.playPause)
+        self.pausePlay.setStyleSheet(config.defaultFullButtonFont)
 
         self.previousSong = QtWidgets.QPushButton(self.centralwidget)
         self.previousSong.setGeometry(QtCore.QRect(244, 675, 93, 28))
-        
+        self.previousSong.setStyleSheet(config.defaultFullButtonFont)
+
         self.tenSecondsAgo = QtWidgets.QPushButton(self.centralwidget)
         self.tenSecondsAgo.setGeometry(QtCore.QRect(349, 675, 93, 28))
         self.tenSecondsAgo.clicked.connect(self.rewind)
-        
+        self.tenSecondsAgo.setStyleSheet(config.defaultFullButtonFont)
+
         self.tenSecondsAhead = QtWidgets.QPushButton(self.centralwidget)
         self.tenSecondsAhead.setGeometry(QtCore.QRect(559, 675, 93, 28))
         self.tenSecondsAhead.clicked.connect(lambda: self.fastForward(self.audioLength))
+        self.tenSecondsAhead.setStyleSheet(config.defaultFullButtonFont)
 
         self.nextSong = QtWidgets.QPushButton(self.centralwidget)
         self.nextSong.setGeometry(QtCore.QRect(664, 675, 93, 28))
+        self.nextSong.setStyleSheet(config.defaultFullButtonFont)
 
         self.fileCharacteristics = QtWidgets.QLabel(self.centralwidget)
         self.fileCharacteristics.setGeometry(QtCore.QRect(600, 30, 360, 31))
@@ -93,11 +99,11 @@ class Ui_MainWindow(object):
         self.fileTitle.setText(_translate("MainWindow", "<Название файла>"))
         self.presentTime.setText(_translate("MainWindow", "00:00"))
         self.songLength.setText(_translate("MainWindow", "00:00"))
-        self.pausePlay.setText(_translate("MainWindow", "Пауза/Пуск"))
-        self.previousSong.setText(_translate("MainWindow", "|<<"))
-        self.tenSecondsAgo.setText(_translate("MainWindow", "<<"))
-        self.tenSecondsAhead.setText(_translate("MainWindow", ">>"))
-        self.nextSong.setText(_translate("MainWindow", ">>|"))
+        self.pausePlay.setText(_translate("MainWindow", "⏯️"))
+        self.previousSong.setText(_translate("MainWindow", "⏮️"))
+        self.tenSecondsAgo.setText(_translate("MainWindow", "⏪"))
+        self.tenSecondsAhead.setText(_translate("MainWindow", "⏩"))
+        self.nextSong.setText(_translate("MainWindow", "⏭️"))
         self.playlistLabel.setText(_translate("MainWindow", "Плейлист"))
         self.playlist.setText(_translate("MainWindow", "^_^"))
         self.fileCharacteristics.setText(_translate("MainWindow", "Характеристики файла"))
