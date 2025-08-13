@@ -139,6 +139,12 @@ class Window(ui.Ui_MainWindow):
             self.player.play()
             self.playing = True
 
+    def rewind(self):
+        pass
+
+    def fastForward(self):
+        pass
+
     def playPreviousSong(self):
         pass
 

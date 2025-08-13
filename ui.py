@@ -6,6 +6,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1000, 750)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
+        MainWindow.setCentralWidget(self.centralwidget)
 
         self.wallpaper = QtWidgets.QLabel(self.centralwidget)
         self.wallpaper.setGeometry(0, 0, 1000, 800)
@@ -45,9 +46,11 @@ class Ui_MainWindow(object):
         
         self.tenSecondsAgo = QtWidgets.QPushButton(self.centralwidget)
         self.tenSecondsAgo.setGeometry(QtCore.QRect(349, 675, 93, 28))
+        self.tenSecondsAgo.clicked.connect(self.rewind)
         
         self.tenSecondsAhead = QtWidgets.QPushButton(self.centralwidget)
         self.tenSecondsAhead.setGeometry(QtCore.QRect(559, 675, 93, 28))
+        self.tenSecondsAhead.clicked.connect(self.fastForward)
 
         self.nextSong = QtWidgets.QPushButton(self.centralwidget)
         self.nextSong.setGeometry(QtCore.QRect(664, 675, 93, 28))
@@ -71,8 +74,6 @@ class Ui_MainWindow(object):
         self.playlist.setGeometry(QtCore.QRect(600, 329, 371, 282))
         self.playlist.setStyleSheet(config.defaultFullFont)
         self.playlist.setAlignment(QtCore.Qt.AlignLeft)
-
-        MainWindow.setCentralWidget(self.centralwidget)
         
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 26))
