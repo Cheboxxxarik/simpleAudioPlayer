@@ -54,7 +54,7 @@ class Ui_MainWindow(object):
 
         self.tenSecondsAhead = QtWidgets.QPushButton(self.centralwidget)
         self.tenSecondsAhead.setGeometry(QtCore.QRect(559, 675, 93, 28))
-        self.tenSecondsAhead.clicked.connect(lambda: self.fastForward(self.audioLength))
+        self.tenSecondsAhead.clicked.connect(self.fastForward)
         self.tenSecondsAhead.setStyleSheet(config.defaultFullButtonFont)
 
         self.nextSong = QtWidgets.QPushButton(self.centralwidget)
@@ -76,10 +76,10 @@ class Ui_MainWindow(object):
         self.playlistLabel.setStyleSheet(config.defaultFullTitleFont)
         self.playlistLabel.setAlignment(QtCore.Qt.AlignLeft)
 
-        self.playlist = QtWidgets.QLabel(self.centralwidget)
+        self.playlist = QtWidgets.QListWidget(self.centralwidget)
+        self.playlist.addItem("^_^")
         self.playlist.setGeometry(QtCore.QRect(600, 329, 371, 282))
         self.playlist.setStyleSheet(config.defaultFullFont)
-        self.playlist.setAlignment(QtCore.Qt.AlignLeft)
         
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 26))
@@ -105,7 +105,7 @@ class Ui_MainWindow(object):
         self.tenSecondsAhead.setText(_translate("MainWindow", "⏩"))
         self.nextSong.setText(_translate("MainWindow", "⏭️"))
         self.playlistLabel.setText(_translate("MainWindow", "Плейлист"))
-        self.playlist.setText(_translate("MainWindow", "^_^"))
+        # self.playlist.setText(_translate("MainWindow", "^_^"))
         self.fileCharacteristics.setText(_translate("MainWindow", "Характеристики файла"))
         self.fileCharacteristicsList.setText(_translate("MainWindow", "Название: <Название>\n" \
                                                         "Исполнитель: <Исполнитель>\n" \

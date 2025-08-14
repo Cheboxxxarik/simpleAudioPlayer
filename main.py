@@ -138,36 +138,45 @@ class Window(ui.Ui_MainWindow):
             pass
 
     def playPause(self):
-        if self.playing:
-            self.player.pause()
-            self.playing = False
-        else:
-            self.player.play()
-            self.playing = True
+        try:
+            if self.playing:
+                self.player.pause()
+                self.playing = False
+            else:
+                self.player.play()
+                self.playing = True
+        except AttributeError:
+            pass
 
     def updateTimeProgressBar(self):
         pass
 
     def rewind(self):
-        currentPosition = self.player.position()
-        newPosition = currentPosition - 10000
-        if newPosition > 0:
-            self.player.setPosition(newPosition)
-        else:
-            self.player.setPosition(0)        
+        try:
+            currentPosition = self.player.position()
+            newPosition = currentPosition - 10000
+            if newPosition > 0:
+                self.player.setPosition(newPosition)
+            else:
+                self.player.setPosition(0)        
+        except AttributeError:
+            pass
 
-    def fastForward(self, audioLength):
-        currentPosition = self.player.position()
-        newPosition = currentPosition + 10000
-        audioLengthMs = audioLength * 1000
-        if newPosition < audioLengthMs:
-            self.player.setPosition(newPosition)
-        else:
-            try:
-                self.player.setPosition(audioLengthMs)
-                self.player.stop()
-            except TypeError:
-                pass
+    def fastForward(self):
+        try:
+            currentPosition = self.player.position()
+            newPosition = currentPosition + 10000
+            audioLengthMs = self.audioLength * 1000
+            if newPosition < audioLengthMs:
+                self.player.setPosition(newPosition)
+            else:
+                try:
+                    self.player.setPosition(audioLengthMs)
+                    # self.player.stop()
+                except TypeError:
+                    pass
+        except AttributeError:
+            pass
 
     def playPreviousSong(self):
         pass
