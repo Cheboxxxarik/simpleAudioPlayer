@@ -1,12 +1,18 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtMultimedia import QMediaPlayer, QMediaPlaylist
 import config
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 750)
+        MainWindow.resize(1000, 765)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         MainWindow.setCentralWidget(self.centralwidget)
+
+        self.player = QMediaPlayer()
+        self.playlist = QMediaPlaylist()
+        self.player.setPlaylist(self.playlist)
+        self.isSomethingWasOpened = False
 
         self.wallpaper = QtWidgets.QLabel(self.centralwidget)
         self.wallpaper.setGeometry(0, 0, 1000, 800)
@@ -39,27 +45,29 @@ class Ui_MainWindow(object):
         self.songLength.setAlignment(QtCore.Qt.AlignLeft)
         
         self.pausePlay = QtWidgets.QPushButton(self.centralwidget)
-        self.pausePlay.setGeometry(QtCore.QRect(454, 675, 93, 28))
+        self.pausePlay.setGeometry(QtCore.QRect(454, 675, 50, 50))
         self.pausePlay.clicked.connect(self.playPause)
         self.pausePlay.setStyleSheet(config.defaultFullButtonFont)
 
         self.previousSong = QtWidgets.QPushButton(self.centralwidget)
-        self.previousSong.setGeometry(QtCore.QRect(244, 675, 93, 28))
+        self.previousSong.setGeometry(QtCore.QRect(244, 675, 50, 50))
         self.previousSong.setStyleSheet(config.defaultFullButtonFont)
+        self.previousSong.clicked.connect(self.playPreviousSong)
 
         self.tenSecondsAgo = QtWidgets.QPushButton(self.centralwidget)
-        self.tenSecondsAgo.setGeometry(QtCore.QRect(349, 675, 93, 28))
+        self.tenSecondsAgo.setGeometry(QtCore.QRect(349, 675, 50, 50))
         self.tenSecondsAgo.clicked.connect(self.rewind)
         self.tenSecondsAgo.setStyleSheet(config.defaultFullButtonFont)
 
         self.tenSecondsAhead = QtWidgets.QPushButton(self.centralwidget)
-        self.tenSecondsAhead.setGeometry(QtCore.QRect(559, 675, 93, 28))
+        self.tenSecondsAhead.setGeometry(QtCore.QRect(559, 675, 50, 50))
         self.tenSecondsAhead.clicked.connect(self.fastForward)
         self.tenSecondsAhead.setStyleSheet(config.defaultFullButtonFont)
 
         self.nextSong = QtWidgets.QPushButton(self.centralwidget)
-        self.nextSong.setGeometry(QtCore.QRect(664, 675, 93, 28))
+        self.nextSong.setGeometry(QtCore.QRect(664, 675, 50, 50))
         self.nextSong.setStyleSheet(config.defaultFullButtonFont)
+        self.nextSong.clicked.connect(self.playNextSong)
 
         self.fileCharacteristics = QtWidgets.QLabel(self.centralwidget)
         self.fileCharacteristics.setGeometry(QtCore.QRect(600, 30, 360, 31))
@@ -76,10 +84,10 @@ class Ui_MainWindow(object):
         self.playlistLabel.setStyleSheet(config.defaultFullTitleFont)
         self.playlistLabel.setAlignment(QtCore.Qt.AlignLeft)
 
-        self.playlist = QtWidgets.QListWidget(self.centralwidget)
-        self.playlist.addItem("^_^")
-        self.playlist.setGeometry(QtCore.QRect(600, 329, 371, 282))
-        self.playlist.setStyleSheet(config.defaultFullFont)
+        self.playlistTable = QtWidgets.QListWidget(self.centralwidget)
+        self.playlistTable.addItem("^_^")
+        self.playlistTable.setGeometry(QtCore.QRect(600, 329, 371, 282))
+        self.playlistTable.setStyleSheet(config.defaultFullFont)
         
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 1000, 26))

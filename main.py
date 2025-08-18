@@ -21,7 +21,7 @@ class Window(ui.Ui_MainWindow):
                        genre):
         self.formatTime(audioLength)
 
-        visibleFileName = basename(fileName)
+        self.visibleFileName = basename(fileName)
         
         _translate = QtCore.QCoreApplication.translate
         self.fileCharacteristicsList.setText(_translate("MainWindow", f"Название: {title}\n" \
@@ -32,7 +32,7 @@ class Window(ui.Ui_MainWindow):
                                                         f"Количество каналов: {channels}\n"
                                                         f"Размер: {fileSize} Мб\n" \
                                                         f"Дата создания файла: {creationDate}"))
-        self.fileTitle.setText(_translate("MainWindow", visibleFileName))
+        self.fileTitle.setText(_translate("MainWindow", self.visibleFileName))
         self.songLength.setText(_translate("MainWindow", self.formattedTime))
 
     def getCommonMetadata(self, audio, fileName):
@@ -103,6 +103,31 @@ class Window(ui.Ui_MainWindow):
         except FLACNoHeaderError:
             pass
 
+    def makeContent(self, fileName):
+        url = QtCore.QUrl.fromLocalFile(fileName)
+        self.content = QMediaContent(url)
+
+    def updateSongInfo(self, index):
+        if index < 0:
+            return
+        
+        media = self.playlist.media(index)
+
+        if not media.isNull():
+            url = media.canonicalUrl().toLocalFile()
+    
+            extension = splitext(url)[1].lower()
+            if extension == '.mp3':
+                self.getMP3Metadata(url)
+            elif extension == '.wav':
+                self.getWAVEMetadata(url)
+            elif extension == '.flac':
+                self.getFLACMetadata(url)
+    
+            # обновим прогресс-бар
+            self.timeProgressBar.setRange(0, self.player.duration())
+            self.timeProgressBar.setEnabled(True)
+
     def openFile(self):
         self.fileName = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget, "Открыть файл", 
                                                         f"{config.defaultMusicFolder}",
@@ -117,16 +142,24 @@ class Window(ui.Ui_MainWindow):
             elif extension == '.flac':
                 self.getFLACMetadata(self.fileName)
 
-            self.url = QtCore.QUrl.fromLocalFile(self.fileName)
-            self.content = QMediaContent(self.url)
-            self.player = QMediaPlayer()
-            self.player.setMedia(self.content)
-            self.player.play()
+            if self.isSomethingWasOpened == False:
+                self.isSomethingWasOpened = True
+                self.playlistTable.clear()
+                self.playlistTable.addItem(self.visibleFileName)
+                self.makeContent(self.fileName)
+                self.playlist.addMedia(self.content)
+                self.player.play()
+            else:
+                self.playlistTable.addItem(self.visibleFileName)
+                self.makeContent(self.fileName)
+                self.playlist.addMedia(self.content)
+                self.player.play(self.playlist.next())
+
+            self.playlist.currentIndexChanged.connect(self.updateSongInfo)
+
             self.timeProgressBar.setRange(0, self.player.duration())
             self.timeProgressBar.setEnabled(True)
             self.player.positionChanged.connect(self.updateTimeProgressBar)
-
-            self.playing = True
         except Exception:
             pass
 
@@ -139,12 +172,10 @@ class Window(ui.Ui_MainWindow):
 
     def playPause(self):
         try:
-            if self.playing:
+            if self.player.state() == QMediaPlayer.PlayingState:
                 self.player.pause()
-                self.playing = False
             else:
                 self.player.play()
-                self.playing = True
         except AttributeError:
             pass
 
@@ -172,19 +203,20 @@ class Window(ui.Ui_MainWindow):
             else:
                 try:
                     self.player.setPosition(audioLengthMs)
-                    # self.player.stop()
                 except TypeError:
                     pass
         except AttributeError:
             pass
 
     def playPreviousSong(self):
-        pass
+        self.playlist.previous()
+        self.player.play()
 
     def playNextSong(self):
-        pass
-
+        self.playlist.next()
+        self.player.play()        
   
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
