@@ -68,39 +68,39 @@ class Window(ui.Ui_MainWindow):
         self.artist = audio.tags.get("ARTIST")[0]
         self.album = audio.tags.get("ALBUM")[0]
         self.genre = audio.tags.get("GENRE")[0]
-        
-    def getMP3Metadata(self, fileName):  
-        audio = MP3(fileName, ID3=ID3) 
-        try:
-            self.getID3Metadata(audio)
+
+    def getFullMetadata(self, fileName):
+        extension = splitext(self.fileName)[1].lower()
+        if extension == '.mp3':
+            audio = MP3(fileName, ID3=ID3) 
+            try:
+                self.getID3Metadata(audio)
+                self.getCommonMetadata(audio, fileName)
+                self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
+                                    self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
+                                    self.title, self.artist, self.album, self.genre)
+            except ID3NoHeaderError:  
+                pass
+        elif extension == '.wav':
+            audio = WAVE(fileName)
+            title = artist = album = genre = 'Неизвестно'
+
             self.getCommonMetadata(audio, fileName)
             self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
                                 self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
-                                self.title, self.artist, self.album, self.genre)
-        except ID3NoHeaderError:  
-            pass
-
-    def getWAVEMetadata(self, fileName):
-        audio = WAVE(fileName)
-        title = artist = album = genre = 'Неизвестно'
-
-        self.getCommonMetadata(audio, fileName)
-        self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
-                            self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
-                            title, artist, album, genre)
-        self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
-
-
-    def getFLACMetadata(self, fileName):
-        try:
-            audio = FLAC(fileName)
-            self.getRIFFINFOmetadata(audio)            
-            self.getCommonMetadata(audio, fileName)
-            self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
-                                self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
-                                self.title, self.artist, self.album, self.genre)
-        except FLACNoHeaderError:
-            pass
+                                title, artist, album, genre)
+            self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
+        elif extension == '.flac':
+            try:
+                audio = FLAC(fileName)
+                self.getRIFFINFOmetadata(audio)            
+                self.getCommonMetadata(audio, fileName)
+                self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
+                                    self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
+                                    self.title, self.artist, self.album, self.genre)
+                self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
+            except FLACNoHeaderError:
+                pass
 
     def makeContent(self, fileName):
         url = QtCore.QUrl.fromLocalFile(fileName)
@@ -115,13 +115,7 @@ class Window(ui.Ui_MainWindow):
         if not media.isNull():
             url = media.canonicalUrl().toLocalFile()
     
-            extension = splitext(url)[1].lower()
-            if extension == '.mp3':
-                self.getMP3Metadata(url)
-            elif extension == '.wav':
-                self.getWAVEMetadata(url)
-            elif extension == '.flac':
-                self.getFLACMetadata(url)
+            self.getFullMetadata(url)
     
             self.timeProgressBar.setRange(0, self.player.duration())
             self.timeProgressBar.setValue(0)  # Сбрасываем позицию
@@ -136,13 +130,7 @@ class Window(ui.Ui_MainWindow):
                                                         "Музыка(*.mp3 *.wav *.flac)")[0]
 
         try:
-            extension = splitext(self.fileName)[1]
-            if extension == '.mp3':
-                self.getMP3Metadata(self.fileName)
-            elif extension == '.wav':
-                self.getWAVEMetadata(self.fileName)
-            elif extension == '.flac':
-                self.getFLACMetadata(self.fileName)
+            self.getFullMetadata(self.fileName)
 
             if self.isSomethingWasOpened == False:
                 self.isSomethingWasOpened = True
@@ -195,6 +183,7 @@ class Window(ui.Ui_MainWindow):
 
     def updateTimeProgressBar(self):
         if self.player.duration() > 0:  # Проверяем, что трек загружен
+            self.timeProgressBar.setRange(0, self.player.duration())
             # Обновляем позицию слайдера
             self.timeProgressBar.setValue(self.player.position())
             
