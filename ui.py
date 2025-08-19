@@ -113,7 +113,6 @@ class Ui_MainWindow(object):
         self.tenSecondsAhead.setText(_translate("MainWindow", "⏩"))
         self.nextSong.setText(_translate("MainWindow", "⏭️"))
         self.playlistLabel.setText(_translate("MainWindow", "Плейлист"))
-        # self.playlist.setText(_translate("MainWindow", "^_^"))
         self.fileCharacteristics.setText(_translate("MainWindow", "Характеристики файла"))
         self.fileCharacteristicsList.setText(_translate("MainWindow", "Название: <Название>\n" \
                                                         "Исполнитель: <Исполнитель>\n" \

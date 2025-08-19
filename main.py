@@ -69,7 +69,6 @@ class Window(ui.Ui_MainWindow):
         self.album = audio.tags.get("ALBUM")[0]
         self.genre = audio.tags.get("GENRE")[0]
         
-
     def getMP3Metadata(self, fileName):  
         audio = MP3(fileName, ID3=ID3) 
         try:
@@ -124,9 +123,12 @@ class Window(ui.Ui_MainWindow):
             elif extension == '.flac':
                 self.getFLACMetadata(url)
     
-            # обновим прогресс-бар
             self.timeProgressBar.setRange(0, self.player.duration())
+            self.timeProgressBar.setValue(0)  # Сбрасываем позицию
             self.timeProgressBar.setEnabled(True)
+
+            # Сбрасываем текущее время
+            self.presentTime.setText("00:00")
 
     def openFile(self):
         self.fileName = QtWidgets.QFileDialog.getOpenFileName(self.centralwidget, "Открыть файл", 
@@ -153,13 +155,21 @@ class Window(ui.Ui_MainWindow):
                 self.playlistTable.addItem(self.visibleFileName)
                 self.makeContent(self.fileName)
                 self.playlist.addMedia(self.content)
-                self.player.play(self.playlist.next())
+                self.playlist.next()
+                self.player.play()
 
             self.playlist.currentIndexChanged.connect(self.updateSongInfo)
 
             self.timeProgressBar.setRange(0, self.player.duration())
             self.timeProgressBar.setEnabled(True)
+
+            # Подключаем сигналы
             self.player.positionChanged.connect(self.updateTimeProgressBar)
+            self.timeProgressBar.sliderMoved.connect(self.player.setPosition)
+            self.timeProgressBar.sliderReleased.connect(self.onSliderReleased)
+
+            # Сбрасываем текущее время
+            self.presentTime.setText("00:00")
         except Exception:
             pass
 
@@ -179,8 +189,19 @@ class Window(ui.Ui_MainWindow):
         except AttributeError:
             pass
 
+    def onSliderReleased(self):
+        # Устанавливаем позицию плеера при отпускании слайдера
+        self.player.setPosition(self.timeProgressBar.value())
+
     def updateTimeProgressBar(self):
-        pass
+        if self.player.duration() > 0:  # Проверяем, что трек загружен
+            # Обновляем позицию слайдера
+            self.timeProgressBar.setValue(self.player.position())
+            
+            # Обновляем текущее время
+            currentTime = self.player.position() // 1000  # переводим мс в секунды
+            self.formatTime(currentTime)
+            self.presentTime.setText(self.formattedTime)
 
     def rewind(self):
         try:
