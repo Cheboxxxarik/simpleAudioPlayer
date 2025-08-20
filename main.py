@@ -48,37 +48,25 @@ class Window(ui.Ui_MainWindow):
         except OSError:
             self.creationDate = '00.00.0000'
 
-    def getID3Metadata(self, audio):
-        self.title = audio.get('TIT2')  
-        self.artist = audio.get('TPE1')
-        self.album = audio.get('TALB')
-        self.genre = audio.get('TCON')
-        for tag in audio.tags.values():
-            if isinstance(tag, APIC):
-                pixmap = QtGui.QPixmap()
-                pixmap.loadFromData(tag.data)
-                self.albumCover.setPixmap(pixmap.scaled(521, 521, QtCore.Qt.KeepAspectRatio, 
-                                                        QtCore.Qt.SmoothTransformation))
-                break
-        else:
-            self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
-
-    def getRIFFINFOmetadata(self, audio):
-        self.title = audio.tags.get("TITLE")[0]
-        self.artist = audio.tags.get("ARTIST")[0]
-        self.album = audio.tags.get("ALBUM")[0]
-        self.genre = audio.tags.get("GENRE")[0]
-
     def getFullMetadata(self, fileName):
         extension = splitext(self.fileName)[1].lower()
         if extension == '.mp3':
             audio = MP3(fileName, ID3=ID3) 
             try:
-                self.getID3Metadata(audio)
+                title = audio.get('TIT2')  
+                artist = audio.get('TPE1')
+                album = audio.get('TALB')
+                genre = audio.get('TCON')
+                for tag in audio.tags.values():
+                    if isinstance(tag, APIC):
+                        pixmap = QtGui.QPixmap()
+                        pixmap.loadFromData(tag.data)
+                        self.albumCover.setPixmap(pixmap.scaled(521, 521, QtCore.Qt.KeepAspectRatio, 
+                                                                QtCore.Qt.SmoothTransformation))
+                        break
+                else:
+                    self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
                 self.getCommonMetadata(audio, fileName)
-                self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
-                                    self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
-                                    self.title, self.artist, self.album, self.genre)
             except ID3NoHeaderError:  
                 pass
         elif extension == '.wav':
@@ -86,21 +74,22 @@ class Window(ui.Ui_MainWindow):
             title = artist = album = genre = 'Неизвестно'
 
             self.getCommonMetadata(audio, fileName)
-            self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
-                                self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
-                                title, artist, album, genre)
             self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
         elif extension == '.flac':
             try:
                 audio = FLAC(fileName)
-                self.getRIFFINFOmetadata(audio)            
+                title = audio.tags.get("TITLE")[0]
+                artist = audio.tags.get("ARTIST")[0]
+                album = audio.tags.get("ALBUM")[0]
+                genre = audio.tags.get("GENRE")[0]           
                 self.getCommonMetadata(audio, fileName)
-                self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
-                                    self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
-                                    self.title, self.artist, self.album, self.genre)
                 self.albumCover.setPixmap(QtGui.QPixmap(config.defaultAlbumCover))
             except FLACNoHeaderError:
                 pass
+
+        self.setInformation(fileName, self.roundedAudioLength, self.sampleRate, self.bitrate, 
+                                    self.channels, self.fileSize, self.creationDate.strftime('%d.%m.%Y'), 
+                                    title, artist, album, genre)
 
     def makeContent(self, fileName):
         url = QtCore.QUrl.fromLocalFile(fileName)
